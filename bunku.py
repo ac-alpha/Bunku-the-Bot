@@ -87,8 +87,9 @@ def get_bot_converter_response(message: Dict[str, str], bot_handler: Any) -> str
     
     words = content.lower().split()
     if(len(words)==3):
-        courses = list(graphql.getLeaveStats(original_sender)[0].keys())
+        
         if(words[0].lower().strip()=="left" and words[2].lower().strip()=="class"):
+            courses = list(graphql.getLeaveStats(original_sender)[0].keys())
             courseCode = words[1].lower()
             if courseCode in courses:
                 graphql.updateLeave(original_sender,courseCode)
@@ -96,6 +97,7 @@ def get_bot_converter_response(message: Dict[str, str], bot_handler: Any) -> str
             else:
                 msg_response+="Sorry! I don't know which course is that. Try \"@Bunku help\""
         elif(words[1].lower().strip()=="class" and words[2].lower().strip()=="cancelled"):
+            courses = list(graphql.getLeaveStats(original_sender)[0].keys())
             courseCode = words[0].lower().strip()
             if courseCode in courses:
                 graphql.cancelClass(courseCode)
@@ -107,8 +109,8 @@ def get_bot_converter_response(message: Dict[str, str], bot_handler: Any) -> str
             msg_response+="Sorry! I don't know how to respond to that. Try \"@Bunku help\""
     
     if(len(words)==5):
-        courses = list(graphql.getLeaveStats(original_sender)[0].keys())
         if(words[0].lower().strip()=="extra" and words[1].lower().strip()=="class"):
+            courses = list(graphql.getLeaveStats(original_sender)[0].keys())
             courseCode = words[2].lower().strip()
             if courseCode in courses:
                 graphql.extraClass(courseCode)
