@@ -146,30 +146,3 @@ def extraClass(course):
 
 	''')
 	print(result)
-
-
-# extraClass("min106")
-# cancelClass("min106")
-
-print(getStats("aagarwal9782@gmail.com"))
-
-# print(getLeaveStats("aagarwal9782@gmail.com"))
-
-# updateLeave("aagarwal9782@gmail.com", "min106")
-
-# startRecording("aagarwal9782@gmail.com")
-
-# result = client.execute('''
-# {
-#   timetable {
-#     day
-#     t8_9
-#     t9_10
-#   }
-# }
-# ''')
-
-# r = json.loads(result)
-
-# print(result)
-# print(r['data']['timetable'][0]['day'])
