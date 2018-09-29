@@ -141,7 +141,6 @@ def insertExtraClass(datetime, course):
     }
 
     ''')
-    print(result)
 
 def extraClassStats():
   result = client.execute('''
@@ -178,5 +177,4 @@ def startRecording(email):
     }
 
     ''')
-    print(result)
 

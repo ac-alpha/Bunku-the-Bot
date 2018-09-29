@@ -5,6 +5,7 @@ import importlib
 import datetime
 import re
 import graphql
+import asyncio
 
 from typing import Any, Dict, List
 
@@ -18,7 +19,8 @@ Type the following and make me help you:\n\
 @Bunku <course-code> class cancelled : to report about a course class cancelled\n\
 @Bunku extra class <course-code> : to report about an extra class\n\
 @Bunku attendancerecord : to show your attendance record\n\
-@Bunku totalworkingdays : to show total working days and 75 percent of it"
+@Bunku totalworkingdays : to show total working days and 75 percent of it\n\
+@Bunku extra class <course-code> <date> <time> : e.g. 2018-09-23 09:00"
 
     def handle_message(self, message: Dict[str, str], bot_handler: Any) -> None:
         bot_response = get_bot_converter_response(message, bot_handler)
@@ -29,9 +31,9 @@ Type the following and make me help you:\n\
 @Bunku startrecording : to start recording your leaves\n\
 @Bunku left <course-code> class : to record a leave for particular course code\n\
 @Bunku <course-code> class cancelled : to report about a course class cancelled\n\
-@Bunku extra class <course-code> : to report about an extra class\n\
 @Bunku attendancerecord : to show your attendance record\n\
-@Bunku totalworkingdays : to show total working days and 75 percent of it"
+@Bunku totalworkingdays : to show total working days and 75 percent of it\n\
+@Bunku extra class <course-code> <date> <time> : e.g. 2018-09-23 09:00"
 
 def get_bot_converter_response(message: Dict[str, str], bot_handler: Any) -> str:
     content = message['content']
@@ -96,9 +98,24 @@ def get_bot_converter_response(message: Dict[str, str], bot_handler: Any) -> str
                 msg_response+="Sorry! I don't know which course is that. Try \"@Bunku help\""
         else:
             msg_response+="Sorry! I don't know how to respond to that. Try \"@Bunku help\""
-
+    
+    if(len(words)==5):
+        courses = list(graphql.getLeaveStats(original_sender)[0].keys())
+        if(words[0].lower().strip()=="extra" and words[1].lower().strip()=="class"):
+            courseCode = words[2].lower().strip()
+            if courseCode in courses:
+                graphql.extraClass(courseCode)
+                msg_response+="Extra Class of "+courseCode+" has been recorded."
+                graphql.insertExtraClass(words[3]+"~"+words[4],courseCode)
+            else:
+                msg_response+="Sorry! I don't know which course is that. Try \"@Bunku help\""
+        else:
+            msg_response+="Sorry! I don't know how to respond to that. Try \"@Bunku help\""
+    
+    
     if(msg_response==("**"+original_sender+"** ")):
           msg_response+="Sorry! I don't know how to respond to that. Try \"@Bunku help\""
+
     return msg_response
 
 
