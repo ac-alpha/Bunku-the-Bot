@@ -123,6 +123,36 @@ def extraClass(course):
 	''')
 	print(result)
 
+def insertExtraClass(datetime, course):
+  result = client.execute('''
+    mutation insert_extraclass{
+      insert_extraclass(
+      objects: [
+        {
+          datetime : '''+datetime+'''
+          course: '''+course+'''
+        }
+      ]
+      ){
+        returning{
+          sno
+        }
+      }
+    }
+
+    ''')
+    print(result)
+
+def extraClassStats():
+  result = client.execute('''
+  {
+    extraclass{
+      datetime
+      course
+    }
+  }
+    ''')
+  return result['data']['extraclass']
 
 def startRecording(email):
   
