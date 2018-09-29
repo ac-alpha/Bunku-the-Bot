@@ -86,7 +86,29 @@ def getDaysInfo():
 	r = json.loads(result)
 	return r['data']['daysinfo'][0]
 
-print(getDaysInfo())
+def getTimeTable():
+	result = client.execute('''
+	{
+  		timetable{
+    		t8_9
+    		t9_10
+    		t10_11
+    		t11_12
+    		t12_1
+    		t1_2
+    		t2_3
+    		t3_4
+    		t4_5
+    		t5_6
+  		}
+	}
+
+	''')
+
+	r = json.loads(result)
+	return r['data']['timetable']
+
+print(getTimeTable())
 
 # print(getLeaveStats("aagarwal9782@gmail.com"))
 
