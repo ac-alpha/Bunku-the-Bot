@@ -12,11 +12,11 @@ like so:
 
 This bot has following five commands.
 
-1. 'startrecording' : to start recording your leaves
-2. 'left <course-code> class': to record a leave for particular course code
-3. @Bunku <course-code> class cancelled: to report about a course class cancelled
-4. @Bunku extra class <course-code> : to report about an extra class
-5. @Bunku attendancerecord : to show your attendance record
+1. `startrecording` : to start recording your leaves 
+2. `left <course-code> class`: to record a leave for particular course code
+3. `<course-code> class cancelled` : to report about a course class cancelled
+4. `extra class <course-code>` : to report about an extra class
+5. `attendancerecord` : to show your attendance record
 
 ## Setup
 
