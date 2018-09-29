@@ -29,7 +29,8 @@ def startRecording(email):
 
 def updateLeave(email, course):
 	
-	leave = 2; # TODO : change
+	leaveStats = getLeaveStats(email)
+	leave = leaveStats[course] + 1; # TODO : change
 
 	result = client.execute('''
 	mutation update_leavetrack{
@@ -44,6 +45,28 @@ def updateLeave(email, course):
 
 	''')
 	print(result)
+
+def getLeaveStats(email):
+	result = client.execute('''
+	{
+  		leavetrack(
+    		where: {email: {_eq:"'''+email+'''"}}
+  		){
+    		hss01
+    		min106
+    		ecn203
+    		csn221
+    		csn291
+    		csn261
+  		}
+	}
+
+	''')
+	# print(result)
+	r = json.loads(result)
+	return r['data']['leavetrack'][0]
+
+# print(getLeaveStats("aagarwal9782@gmail.com"))
 
 updateLeave("aagarwal9782@gmail.com", "min106")
 
