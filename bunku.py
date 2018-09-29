@@ -17,7 +17,6 @@ Type the following and make me help you:\n\
 @Bunku startrecording : to start recording your leaves\n\
 @Bunku left <course-code> class : to record a leave for particular course code\n\
 @Bunku <course-code> class cancelled : to report about a course class cancelled\n\
-@Bunku extra class <course-code> : to report about an extra class\n\
 @Bunku attendancerecord : to show your attendance record\n\
 @Bunku totalworkingdays : to show total working days and 75 percent of it\n\
 @Bunku extra class <course-code> <date> <time> : e.g. 2018-09-23 09:00"
@@ -30,10 +29,10 @@ help_content = "Hey there! I am Bunku. I am here to help you out this semester a
 Type the following and make me help you:\n\
 @Bunku startrecording : to start recording your leaves\n\
 @Bunku left <course-code> class : to record a leave for particular course code\n\
-@Bunku <course-code> class cancelled : to report about a course class cancelled\n\
 @Bunku attendancerecord : to show your attendance record\n\
 @Bunku totalworkingdays : to show total working days and 75 percent of it\n\
-@Bunku extra class <course-code> <date> <time> : e.g. 2018-09-23 09:00"
+@Bunku extra class <course-code> <date> <time> : e.g. 2018-09-23 09:00\n\
+@Bunku myextraclasses : to show information of latest added extra classes"
 
 def get_bot_converter_response(message: Dict[str, str], bot_handler: Any) -> str:
     content = message['content']
@@ -71,6 +70,20 @@ def get_bot_converter_response(message: Dict[str, str], bot_handler: Any) -> str
             perc75 = int(totaldays*0.75)+1
             msg_response+="\t"+"75perc-"+str(perc75)+"\n"
         msg_response+="--------------------"
+    elif message['content'] == "myextraclasses" :
+        extraClasses = graphql.extraClassStats()
+        if(len(extraClasses) == 0):
+            msg_response+="You don\'t have any extra classes now"
+        else:
+            count=1
+            msg_response+="Extra classes info : \n"
+            for i in range(-1,-1*len(extraClasses)-1,-1):
+                if(count>3):
+                    break
+                datetime = extraClasses[i]["datetime"].split("~")
+                msg_response+=str(datetime[0])+" "+str(datetime[1])+" : "+extraClasses[i]["course"]+"\n"
+            
+                
     
     words = content.lower().split()
     if(len(words)==3):
@@ -89,13 +102,7 @@ def get_bot_converter_response(message: Dict[str, str], bot_handler: Any) -> str
                 msg_response+="Class of "+courseCode+" has been cancelled."
             else:
                 msg_response+="Sorry! I don't know which course is that. Try \"@Bunku help\""
-        elif(words[0].lower().strip()=="extra" and words[1].lower().strip()=="class"):
-            courseCode = words[2].lower().strip()
-            if courseCode in courses:
-                graphql.extraClass(courseCode)
-                msg_response+="Extra Class of "+courseCode+" has been recorded."
-            else:
-                msg_response+="Sorry! I don't know which course is that. Try \"@Bunku help\""
+        
         else:
             msg_response+="Sorry! I don't know how to respond to that. Try \"@Bunku help\""
     
