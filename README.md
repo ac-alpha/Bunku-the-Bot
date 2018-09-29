@@ -8,18 +8,6 @@ like so:
 @Bunku <command>
 ```
 
-## Usage
-
-This bot has following six commands.
-
-1. `startrecording` : to start recording your leaves 
-2. `left <course-code> class`: to record a leave for particular course code
-3. `<course-code> class cancelled` : to report about a course class cancelled
-4. `extra class <course-code> <date> <time>` : to report about an extra class
-5. `attendancerecord` : to show your attendance record
-6. `totalworkingdays` : to show total working days and 75% of it
-7. `myextraclasses` : to show details of latest added extra classes
-
 ## Setup
 - Clone the python-zulip-api repository `git clone https://github.com/zulip/python-zulip-api.git`
 - Navigate into your cloned repository `cd python-zulip-api`
@@ -35,6 +23,18 @@ This bot has following six commands.
 - Move the `zuliprc` file to the `bunku` repository
 - Start the bot using command `zulip-run-bot bunku --config zuliprc`
 - You are good to interact with the bot
+
+## Usage
+
+This bot has following six commands.
+
+1. `startrecording` : to start recording your leaves 
+2. `left <course-code> class`: to record a leave for particular course code
+3. `<course-code> class cancelled` : to report about a course class cancelled
+4. `extra class <course-code> <date> <time>` : to report about an extra class
+5. `attendancerecord` : to show your attendance record
+6. `totalworkingdays` : to show total working days and 75% of it
+7. `myextraclasses` : to show details of latest added extra classes
 
 ### Usage examples
 
