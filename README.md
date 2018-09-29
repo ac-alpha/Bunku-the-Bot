@@ -33,7 +33,7 @@ This bot has following five commands.
 | ------- | ------ |
 | `@Bunku startrecording` | aagarwal@cs.iitr.ac.in Started recording your attendance |
 | '@Bunku attendancerecord' |aagarwal@cs.iitr.ac.in 
-                              ---Stats---
+                            |  ---Stats---
                               csn221 : 42/42 100.0%
                               hss01 : 31/31 100.0%
                               ecn203 : 41/41 100.0%
