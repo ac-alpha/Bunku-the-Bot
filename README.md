@@ -20,9 +20,14 @@ This bot has following six commands.
 6. `totalworkingdays` : to show total working days and 75% of it
 
 ## Setup
-
-- First clone the bot repository
+- clone the python-zulip-api repository `git clone https://github.com/zulip/python-zulip-api.git`
+- navigate into your cloned repository `cd python-zulip-api`
+- install `pip install virtualenv`
+- install all requirements in a Python virtualenv `python3 ./tools/provision`
 - Activate python3 virtual environment
+- install `pip install zulip_bots`
+- install `pip install graphqlclients`
+- clone bunku the bot repository `https://github.com/ac-alpha/Bunku-the-Bot.git`
 - Navigate into bot repository
 - Run the bot using command `Zulip-terminal bunku`
 
