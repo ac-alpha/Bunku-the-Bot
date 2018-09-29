@@ -70,7 +70,7 @@ def getStats(email):
 
 def updateLeave(email, course):
 	
-	leaveStats = getLeaveStats(email)
+	leaveStats = getLeaveStats(email)[0]
 	leave = leaveStats[course] + 1
 
 	result = client.execute('''

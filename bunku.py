@@ -65,18 +65,18 @@ def get_bot_converter_response(message: Dict[str, str], bot_handler: Any) -> str
         msg_response+="--------------------------"
     elif message['content'] == "totalworkingdays":
         msg_response+="\n---Total Working Days---\n"
-        for course in graphql.getLeaveStats[0](original_sender):
+        for course in graphql.getLeaveStats(original_sender)[0]:
             msg_response+=course+"\t:\t"
             totaldays = totalWorkingDays(course)+graphql.getDaysInfo()[course]
             msg_response+="total-"+str(totaldays)
             perc75 = int(totaldays*0.75)+1
-            msg_response+="\t"+"75perc-"+str(perc75)+"%\n"
+            msg_response+="\t"+"75perc-"+str(perc75)+"\n"
         msg_response+="--------------------"
     
     words = content.lower().split()
     if(len(words)==3):
-        courses = list(graphql.getLeaveStats[0].keys())
-        if(words[0].lower().strip()=="left" and words[2].lower().strip(=="class")):
+        courses = list(graphql.getLeaveStats(original_sender)[0].keys())
+        if(words[0].lower().strip()=="left" and words[2].lower().strip()=="class"):
             courseCode = words[1].lower()
             if courseCode in courses:
                 graphql.updateLeave(original_sender,courseCode)
@@ -99,9 +99,9 @@ def get_bot_converter_response(message: Dict[str, str], bot_handler: Any) -> str
                 msg_response+="Sorry! I don't know which course is that. Try \"@Bunku help\""
         else:
             msg_response+="Sorry! I don't know how to respond to that. Try \"@Bunku help\""
-    else:
-        msg_response+="Sorry! I don't know how to respond to that. Try \"@Bunku help\""
-                
+
+    if(msg_response==("**"+original_sender+"** ")):
+          msg_response+="Sorry! I don't know how to respond to that. Try \"@Bunku help\""
     return msg_response
 
 
