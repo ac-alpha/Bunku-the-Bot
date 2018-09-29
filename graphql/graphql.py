@@ -66,9 +66,31 @@ def getLeaveStats(email):
 	r = json.loads(result)
 	return r['data']['leavetrack'][0]
 
+def getDaysInfo():
+	result = client.execute('''
+	{
+  		daysinfo{
+    		startsession
+    		endsession
+    		hss01
+    		min106
+    		ecn203
+    		csn221
+    		csn291
+    		csn261
+  		}
+	}
+
+	''')
+
+	r = json.loads(result)
+	return r['data']['daysinfo'][0]
+
+print(getDaysInfo())
+
 # print(getLeaveStats("aagarwal9782@gmail.com"))
 
-updateLeave("aagarwal9782@gmail.com", "min106")
+# updateLeave("aagarwal9782@gmail.com", "min106")
 
 # startRecording("aagarwal9782@gmail.com")
 
