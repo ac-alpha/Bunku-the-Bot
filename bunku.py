@@ -21,7 +21,8 @@ Type the following and make me help you:\n\
 @Bunku left <course-code> class : to record a leave for particular course code\n\
 @Bunku <course-code> class cancelled : to report about a course class cancelled\n\
 @Bunku extra class <course-code> : to report about an extra class\n\
-@Bunku attendancerecord : to show your attendance record"
+@Bunku attendancerecord : to show your attendance record\n\
+@Bunku totalworkingdays : to show total working days and 75 percent of it"
 
     def handle_message(self, message: Dict[str, str], bot_handler: Any) -> None:
         bot_response = get_bot_converter_response(message, bot_handler)
@@ -33,7 +34,8 @@ Type the following and make me help you:\n\
 @Bunku left <course-code> class : to record a leave for particular course code\n\
 @Bunku <course-code> class cancelled : to report about a course class cancelled\n\
 @Bunku extra class <course-code> : to report about an extra class\n\
-@Bunku attendancerecord : to show your attendance record"
+@Bunku attendancerecord : to show your attendance record\n\
+@Bunku totalworkingdays : to show total working days and 75 percent of it"
 
 def get_bot_converter_response(message: Dict[str, str], bot_handler: Any) -> str:
     content = message['content']
@@ -44,24 +46,36 @@ def get_bot_converter_response(message: Dict[str, str], bot_handler: Any) -> str
     if message['content'] == '' or message['content'] == 'help':
         return help_content
 
+    if(graphql.getLeaveStats(original_sender)==[]):
+        return "You have not started recording your leaves. Type \"@Bunku startrecording\" to start recording your leaves"
+
     if message['content'] == 'startrecording':
         graphql.startRecording(original_sender)
         msg_response += "Started recording your attendance"
     elif message['content'] == 'attendancerecord':
-        msg_response+="\n---Stats---\n"
-        for course in graphql.getLeaveStats(original_sender):
+        msg_response+="\n--- Leave Statistics---\n"
+        for course in graphql.getLeaveStats(original_sender)[0]:
             msg_response+=course+"\t:\t"
-            daystillnow = daysTillNow(course)
-            leavestillnow = graphql.getLeaveStats(original_sender)[course]
+            daystillnow = daysTillNow(course)+graphql.getDaysInfo()[course]
+            leavestillnow = graphql.getLeaveStats(original_sender)[0][course]
             daysattendedtillnow = daystillnow-leavestillnow
             msg_response+=str(daysattendedtillnow)+"/"+str(daystillnow)
             perc = int((daysattendedtillnow/float(daystillnow)) * 10000)/100.0
             msg_response+="\t"+str(perc)+"%\n"
-        msg_response+="-----------"
+        msg_response+="--------------------------"
+    elif message['content'] == "totalworkingdays":
+        msg_response+="\n---Total Working Days---\n"
+        for course in graphql.getLeaveStats[0](original_sender):
+            msg_response+=course+"\t:\t"
+            totaldays = totalWorkingDays(course)+graphql.getDaysInfo()[course]
+            msg_response+="total-"+str(totaldays)
+            perc75 = int(totaldays*0.75)+1
+            msg_response+="\t"+"75perc-"+str(perc75)+"%\n"
+        msg_response+="--------------------"
     
     words = content.lower().split()
     if(len(words)==3):
-        courses = list(graphql.getLeaveStats.keys())
+        courses = list(graphql.getLeaveStats[0].keys())
         if(words[0].lower().strip()=="left" and words[2].lower().strip(=="class")):
             courseCode = words[1].lower()
             if courseCode in courses:
@@ -103,6 +117,29 @@ def daysTillNow(courseCode):
         hrsEachDay.append(temp)
     fromdate = datetime.date(int(startDate[:4]),int(startDate[5:7]),int(startDate[8:]))
     todate = datetime.date.today()
+    daygenerator = (fromdate + datetime.timedelta(x + 1) for x in range((todate - fromdate).days))
+    weekdays=[0,0,0,0,0]
+    for day in daygenerator:
+        if (day.weekday() < 5):
+            weekdays[day.weekday()]=weekdays[day.weekday()]+1
+    totalClassesTillNow=0
+    for i in range(5):
+        totalClassesTillNow+=hrsEachDay[i]*weekdays[i]
+    return totalClassesTillNow
+
+def totalWorkingDays(courseCode):
+    startDate = graphql.getDaysInfo()["startsession"]    #workingdays["startsession"]
+    hrsEachDay=[]
+    tt=graphql.getTimeTable()
+    for entry in tt:
+        temp=0
+        for time in entry:
+            if entry[time]==courseCode.lower():
+                temp+=1
+        hrsEachDay.append(temp)
+    fromdate = datetime.date(int(startDate[:4]),int(startDate[5:7]),int(startDate[8:]))
+    endDate=graphql.getDaysInfo()["endsession"]
+    todate = datetime.date(int(endDate[:4]),int(endDate[5:7]),int(endDate[8:]))
     daygenerator = (fromdate + datetime.timedelta(x + 1) for x in range((todate - fromdate).days))
     weekdays=[0,0,0,0,0]
     for day in daygenerator:
