@@ -27,6 +27,26 @@ def startRecording(email):
 	''')
 	print(result)
 
+def updateLeave(email, course):
+	
+	leave = 2; # TODO : change
+
+	result = client.execute('''
+	mutation update_leavetrack{
+  		update_leavetrack(
+    		where: {email : {_eq: "'''+email+'''"}}
+    		_set: {'''+course+''': '''+str(leave)+'''}
+  		){
+    		affected_rows
+  		}
+  
+	}
+
+	''')
+	print(result)
+
+updateLeave("aagarwal9782@gmail.com", "min106")
+
 # startRecording("aagarwal9782@gmail.com")
 
 # result = client.execute('''
