@@ -27,25 +27,6 @@ def startRecording(email):
 	''')
 	print(result)
 
-def updateLeave(email, course):
-	
-	leaveStats = getLeaveStats(email)
-	leave = leaveStats[course] + 1; # TODO : change
-
-	result = client.execute('''
-	mutation update_leavetrack{
-  		update_leavetrack(
-    		where: {email : {_eq: "'''+email+'''"}}
-    		_set: {'''+course+''': '''+str(leave)+'''}
-  		){
-    		affected_rows
-  		}
-  
-	}
-
-	''')
-	print(result)
-
 def getLeaveStats(email):
 	result = client.execute('''
 	{
@@ -108,7 +89,68 @@ def getTimeTable():
 	r = json.loads(result)
 	return r['data']['timetable']
 
-print(getTimeTable())
+def updateLeave(email, course):
+	
+	leaveStats = getLeaveStats(email)
+	leave = leaveStats[course] + 1 # TODO : change
+
+	result = client.execute('''
+	mutation update_leavetrack{
+  		update_leavetrack(
+    		where: {email : {_eq: "'''+email+'''"}}
+    		_set: {'''+course+''': '''+str(leave)+'''}
+  		){
+    		affected_rows
+  		}
+  
+	}
+
+	''')
+	print(result)
+
+def cancelClass(course):
+	daysStats = getDaysInfo()
+	workingDays = daysStats[course] - 1
+
+	result = client.execute('''
+	mutation update_daysinfo{
+  		update_daysinfo(
+    		where: {sno : {_eq: 1}}
+    		_set: {'''+course+''': '''+str(workingDays)+'''}
+  		){
+    		affected_rows
+  		}
+  
+	}
+
+	''')
+	print(result)
+
+def extraClass(course):
+	daysStats = getDaysInfo()
+	workingDays = daysStats[course] + 1
+
+	result = client.execute('''
+	mutation update_daysinfo{
+  		update_daysinfo(
+    		where: {sno : {_eq: 1}}
+    		_set: {'''+course+''': '''+str(workingDays)+'''}
+  		){
+    		affected_rows
+  		}
+  
+	}
+
+	''')
+	print(result)
+
+
+extraClass("min106")
+cancelClass("min106")
+
+
+
+# print(getTimeTable())
 
 # print(getLeaveStats("aagarwal9782@gmail.com"))
 
