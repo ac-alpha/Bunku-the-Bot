@@ -3,30 +3,6 @@ import json
 
 client = GraphQLClient('https://banku-synfour.herokuapp.com/v1alpha1/graphql')
 
-def startRecording(email):
-	result = client.execute('''
-	mutation insert_leavetrack{
-  		insert_leavetrack(
-    		objects:[
-    		{
-        		email : "'''+ email + '''"
-        		hss01: 0
-        		min106: 0
-        		ecn203: 0
-        		csn221: 0
-        		csn291: 0
-        		csn261: 0
-      		}
-    	]){
-    		returning{
-      			email
-    		}
-  		}
-	}
-
-	''')
-	print(result)
-
 def getLeaveStats(email):
 	result = client.execute('''
 	{
@@ -45,7 +21,7 @@ def getLeaveStats(email):
 	''')
 	# print(result)
 	r = json.loads(result)
-	return r['data']['leavetrack'][0]
+	return r['data']['leavetrack']
 
 def getDaysInfo():
 	result = client.execute('''
@@ -146,3 +122,33 @@ def extraClass(course):
 
 	''')
 	print(result)
+
+
+def startRecording(email):
+  
+  if getLeaveStats(email) == [] :
+    result = client.execute('''
+    mutation insert_leavetrack{
+        insert_leavetrack(
+          objects:[
+          {
+              email : "'''+ email + '''"
+              hss01: 0
+              min106: 0
+              ecn203: 0
+              csn221: 0
+              csn291: 0
+              csn261: 0
+            }
+        ]){
+          returning{
+              email
+          }
+        }
+    }
+
+    ''')
+    print(result)
+
+
+startRecording("aagarwal@cs.iitr.ac.in")
