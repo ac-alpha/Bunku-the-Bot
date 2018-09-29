@@ -22,7 +22,7 @@ Type the following and make me help you:\n\
 @Bunku extra class <course-code> <date> <time> : e.g. 2018-09-23 09:00"
 
     def handle_message(self, message: Dict[str, str], bot_handler: Any) -> None:
-        bot_response = get_bot_converter_response(message, bot_handler)
+        bot_response = get_bot_bunku_response(message, bot_handler)
         bot_handler.send_reply(message, bot_response)
 
 help_content = "Hey there! I am Bunku. I am here to help you out this semester and many more.\n\
@@ -34,7 +34,7 @@ Type the following and make me help you:\n\
 @Bunku extra class <course-code> <date> <time> : e.g. 2018-09-23 09:00\n\
 @Bunku myextraclasses : to show information of latest added extra classes"
 
-def get_bot_converter_response(message: Dict[str, str], bot_handler: Any) -> str:
+def get_bot_bunku_response(message: Dict[str, str], bot_handler: Any) -> str:
     content = message['content']
     original_sender = message['sender_email']
 
@@ -51,7 +51,7 @@ def get_bot_converter_response(message: Dict[str, str], bot_handler: Any) -> str
         return "You have not started recording your leaves. Type \"@Bunku startrecording\" to start recording your leaves"
 
     if message['content'] == 'attendancerecord':
-        msg_response+="\n--- Leave Statistics---\n"
+        msg_response+="\n---Leave Statistics---\n"
         for course in graphql.getLeaveStats(original_sender)[0]:
             msg_response+=course+"\t:\t"
             daystillnow = daysTillNow(course)+graphql.getDaysInfo()[course]
@@ -82,6 +82,7 @@ def get_bot_converter_response(message: Dict[str, str], bot_handler: Any) -> str
                     break
                 datetime = extraClasses[i]["datetime"].split("~")
                 msg_response+=str(datetime[0])+" "+str(datetime[1])+" : "+extraClasses[i]["course"]+"\n"
+                count+=1
             
                 
     
