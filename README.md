@@ -10,17 +10,21 @@ like so:
 
 ## Usage
 
-This bot has following five commands.
+This bot has following six commands.
 
 1. `startrecording` : to start recording your leaves 
 2. `left <course-code> class`: to record a leave for particular course code
 3. `<course-code> class cancelled` : to report about a course class cancelled
 4. `extra class <course-code>` : to report about an extra class
 5. `attendancerecord` : to show your attendance record
+6. `totalworkingdays` : to show total working days and 75% of it
 
 ## Setup
 
-
+- First clone the bot repository
+- Activate python3 virtual environment
+- Navigate into bot repository
+- Run the bot using command `Zulip-terminal bunku`
 
 ### Usage examples
 
