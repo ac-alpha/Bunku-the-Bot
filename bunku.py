@@ -2,7 +2,6 @@
 
 import copy
 import importlib
-from math import log10, floor
 import datetime
 import re
 import graphql
@@ -10,10 +9,7 @@ import graphql
 from typing import Any, Dict, List
 
 class BunkuHandler(object):
-    '''
-    '''
     
-
     def usage(self) -> str:
         return "Hey there! I am Bunku. I am here to help you out this semester and many more.\n\
 Type the following and make me help you:\n\
@@ -46,13 +42,14 @@ def get_bot_converter_response(message: Dict[str, str], bot_handler: Any) -> str
     if message['content'] == '' or message['content'] == 'help':
         return help_content
 
-    if(graphql.getLeaveStats(original_sender)==[]):
-        return "You have not started recording your leaves. Type \"@Bunku startrecording\" to start recording your leaves"
-
     if message['content'] == 'startrecording':
         graphql.startRecording(original_sender)
         msg_response += "Started recording your attendance"
-    elif message['content'] == 'attendancerecord':
+
+    if(graphql.getLeaveStats(original_sender)==[]):
+        return "You have not started recording your leaves. Type \"@Bunku startrecording\" to start recording your leaves"
+
+    if message['content'] == 'attendancerecord':
         msg_response+="\n--- Leave Statistics---\n"
         for course in graphql.getLeaveStats(original_sender)[0]:
             msg_response+=course+"\t:\t"
