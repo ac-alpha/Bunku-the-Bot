@@ -147,7 +147,4 @@ def totalWorkingDays(courseCode):
         totalClassesTillNow+=hrsEachDay[i]*weekdays[i]
     return totalClassesTillNow
 
-        
 handler_class = BunkuHandler
-
-
