@@ -150,5 +150,3 @@ def startRecording(email):
     ''')
     print(result)
 
-
-startRecording("aagarwal@cs.iitr.ac.in")
