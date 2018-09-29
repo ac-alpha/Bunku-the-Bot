@@ -89,10 +89,13 @@ def getTimeTable():
 	r = json.loads(result)
 	return r['data']['timetable']
 
+def getStats(email):
+	return getDaysInfo(), getTimeTable(), getLeaveStats(email)
+
 def updateLeave(email, course):
 	
 	leaveStats = getLeaveStats(email)
-	leave = leaveStats[course] + 1 # TODO : change
+	leave = leaveStats[course] + 1
 
 	result = client.execute('''
 	mutation update_leavetrack{
@@ -145,12 +148,10 @@ def extraClass(course):
 	print(result)
 
 
-extraClass("min106")
-cancelClass("min106")
+# extraClass("min106")
+# cancelClass("min106")
 
-
-
-# print(getTimeTable())
+print(getStats("aagarwal9782@gmail.com"))
 
 # print(getLeaveStats("aagarwal9782@gmail.com"))
 
